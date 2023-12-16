@@ -251,8 +251,14 @@ const DrawingArea = () => {
         const position = stage.getPointerPosition();
         setNewTextPosition(position);
       }
+    } else if (selectedTool === "stickyNotes") {
+      // calling the handleAddNote function to add a sticky note
+      handleAddNote(pos.x, pos.y, 200, 200, "Rectangle");
+      // reset the selectedTool so the user can draw another sticky note
+      setSelectedTool("");
     }
   };
+
   // Functions calling when the mouse move on the board for start draawing
   const handleMouseMove = (e) => {
     if (!isDrawing.current) {
@@ -575,12 +581,12 @@ const DrawingArea = () => {
     setInputText(event.target.value);
   };
 
-  const handleAddNote = (w, h, shape) => {
+  const handleAddNote = (x, y, w, h, shape) => {
     setNotes([
       ...notes,
       {
-        x: 100,
-        y: 100,
+        x: x,
+        y: y,
         width: w,
         height: h,
         shape: shape,
@@ -676,6 +682,7 @@ const DrawingArea = () => {
               >
                 <div
                   // onClick={() => handleAddNote(200, 300,shape)}
+                  onClick={() => setSelectedTool("stickyNotes")}
                   style={{ padding: "12px" }}
                 >
                   <BsStickyFill />
@@ -689,7 +696,6 @@ const DrawingArea = () => {
                 <BsEraser size={20} color="blue" />
               </div>
 
-             
               <div
                 variant="light"
                 onClick={() => setSelectedTool("brush")}
